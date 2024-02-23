@@ -1,5 +1,8 @@
 services:
   data-service:
     build: 
-      context: ./data-service/src/main/docker
-      dockerfile: Dockerfile.jvm
+      context: ./data-service
+      dockerfile: ./src/main/docker/Dockerfile.jvm
+    image: docker.io/fax4ever/gallery:1.0.0-SNAPSHOT
+    ports:
+      - "8080:8080"
