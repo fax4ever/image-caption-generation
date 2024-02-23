@@ -1,0 +1,5 @@
+services:
+  data-service:
+    build: 
+      context: ./data-service/src/main/docker
+      dockerfile: Dockerfile.jvm
