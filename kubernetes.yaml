@@ -5,16 +5,33 @@ metadata:
   labels:
     app.kubernetes.io/name: gallery
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
-    app.kubernetes.io/managed-by: quarkus
   name: gallery
 spec:
   ports:
     - name: http
-      port: 80
+      port: 8080
       protocol: TCP
       targetPort: 8080
   selector:
     app.kubernetes.io/name: gallery
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: caption
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: caption
+spec:
+  ports:
+    - name: http
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app.kubernetes.io/name: caption
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
   type: LoadBalancer
 ---
@@ -24,7 +41,6 @@ metadata:
   labels:
     app.kubernetes.io/name: gallery
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
-    app.kubernetes.io/managed-by: quarkus
   name: gallery
 spec:
   replicas: 1
@@ -35,7 +51,6 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/managed-by: quarkus
         app.kubernetes.io/name: gallery
         app.kubernetes.io/version: 1.0.0-SNAPSHOT
     spec:
@@ -50,5 +65,38 @@ spec:
           name: gallery
           ports:
             - containerPort: 8080
+              name: http
+              protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: caption
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: caption
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: caption
+      app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: caption
+        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: docker.io/fax4ever/caption:1.0.0-SNAPSHOT
+          imagePullPolicy: Always
+          name: caption
+          ports:
+            - containerPort: 8000
               name: http
               protocol: TCP

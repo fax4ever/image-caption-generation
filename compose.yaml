@@ -1,8 +1,14 @@
 services:
-  data-service:
+  gallery:
     build: 
       context: ./gallery
       dockerfile: ./src/main/docker/Dockerfile.jvm
     image: docker.io/fax4ever/gallery:1.0.0-SNAPSHOT
     ports:
       - "8080:8080"
+  caption:
+    build:
+      context: ./caption
+    image: docker.io/fax4ever/caption:1.0.0-SNAPSHOT
+    ports:
+      - "8000:8000"
