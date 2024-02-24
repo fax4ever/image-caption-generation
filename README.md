@@ -33,7 +33,7 @@ PORT=$(kubectl get service caption -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
-## Gallery Service: Develop and Compile
+## Gallery Service: Develop and Package
 
 [./gallery/]
 
@@ -43,6 +43,18 @@ echo $IP:$PORT
 
 ``` shell
 ./mvnw package
+```
+
+## WebApp: Develop and Package
+
+[./weapp/]
+
+``` shell
+ng serve
+```
+
+``` shell
+ng build --prod
 ```
 
 ## Docker: Build and Publish
@@ -58,11 +70,19 @@ docker-compose push
 ```
 
 ``` shell
-docker run -i --rm -p 8080:8080 docker.io/fax4ever/gallery:1.0.0-SNAPSHOT
+docker run -i --rm -p 8080:8080 docker.io/fax4ever/gallery:1.0.0-SNAPSHOT --name=gallery
 ```
 
 ``` shell
-docker run -i --rm -p 8000:8000 docker.io/fax4ever/caption:1.0.0-SNAPSHOT
+docker run -i --rm -p 8000:8000 docker.io/fax4ever/caption:1.0.0-SNAPSHOT --name=caption
+```
+
+``` shell
+docker run -i --rm -p 80:8880 docker.io/fax4ever/webapp:1.0.0-SNAPSHOT --name=webapp
+```
+
+``` shell
+docker exec -it webapp /bin/sh
 ```
 
 ## Install Bare Metal Kubernetes: Kind + MetalLB

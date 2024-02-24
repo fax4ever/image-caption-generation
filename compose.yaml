@@ -12,3 +12,9 @@ services:
     image: docker.io/fax4ever/caption:1.0.0-SNAPSHOT
     ports:
       - "8000:8000"
+  webapp:
+    build:
+      context: ./webapp
+    image: docker.io/fax4ever/webapp:1.0.0-SNAPSHOT
+    ports:
+      - "80:80"
