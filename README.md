@@ -120,7 +120,9 @@ kind create cluster --name=blablabla
 ```
 
 > kind get clusters
+
 > kubectl cluster-info --context kind-blablabla
+
 > kind delete cluster --name=blablabla
 
 (copied from https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml)
@@ -148,7 +150,8 @@ kubectl config set-context --current --namespace=image-caption-generation
 docker network inspect -f '{{.IPAM.Config}}' kind
 ```
 
-=> modify with IP address [./extra/metallb-config.yaml]
+if ≠ 172.18.0.0/16
+  modify with IP address [./extra/metallb-config.yaml]
 ```
 kubectl apply -f extra/metallb-config.yaml
 ```
