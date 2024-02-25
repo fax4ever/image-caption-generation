@@ -54,7 +54,7 @@ ng serve
 ```
 
 ``` shell
-ng build --prod
+ng build --configuration production
 ```
 
 ## Docker: Build and Publish
@@ -70,19 +70,23 @@ docker-compose push
 ```
 
 ``` shell
-docker run -i --rm -p 8080:8080 docker.io/fax4ever/gallery:1.0.0-SNAPSHOT --name=gallery
+docker run -i --rm -p 8080:8080 --name=gallery docker.io/fax4ever/gallery:1.0.0-SNAPSHOT
 ```
 
 ``` shell
-docker run -i --rm -p 8000:8000 docker.io/fax4ever/caption:1.0.0-SNAPSHOT --name=caption
+docker run -i --rm -p 8000:8000 --name=caption docker.io/fax4ever/caption:1.0.0-SNAPSHOT
 ```
 
 ``` shell
-docker run -i --rm -p 80:8880 docker.io/fax4ever/webapp:1.0.0-SNAPSHOT --name=webapp
+docker run -i --rm -p 80:80 --name=webapp docker.io/fax4ever/webapp:1.0.0-SNAPSHOT
 ```
 
 ``` shell
 docker exec -it webapp /bin/sh
+```
+
+``` shell
+docker build -t docker.io/fax4ever/test:1.0.0-SNAPSHOT .
 ```
 
 ## Install Bare Metal Kubernetes: Kind + MetalLB

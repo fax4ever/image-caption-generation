@@ -35,6 +35,24 @@ spec:
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
   type: LoadBalancer
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: webapp
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: webapp
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app.kubernetes.io/name: webapp
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  type: LoadBalancer
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -96,6 +114,39 @@ spec:
           image: docker.io/fax4ever/caption:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           name: caption
+          ports:
+            - containerPort: 8000
+              name: http
+              protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: webapp
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: webapp
+      app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: webapp
+        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: docker.io/fax4ever/webapp:1.0.0-SNAPSHOT
+          imagePullPolicy: Always
+          name: webapp
           ports:
             - containerPort: 8000
               name: http
