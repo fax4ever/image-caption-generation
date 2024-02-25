@@ -1,4 +1,16 @@
-# Image Capture Generation
+# Image Caption Generation
+
+## Clone
+
+``` shell
+git lfs install
+```
+
+> sudo dnf install git-lfs
+
+``` shell
+git clone git@github.com:fax4ever/image-caption-generation.git
+```
 
 ## Kubernetes: Deploy
 
@@ -30,6 +42,12 @@ echo $IP:$PORT
 ``` shell
 IP=$(kubectl get service caption -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
 PORT=$(kubectl get service caption -o jsonpath="{.spec.ports[0].port}")
+echo $IP:$PORT
+```
+
+``` shell
+IP=$(kubectl get service webapp -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+PORT=$(kubectl get service webapp -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
