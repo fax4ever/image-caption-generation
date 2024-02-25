@@ -1,6 +1,10 @@
+import os
 from transformers import VisionEncoderDecoderModel, ViTImageProcessor, AutoTokenizer
 import torch
 from PIL import Image
+
+os.environ['TRANSFORMERS_CACHE'] = '/app/images'
+os.environ['HF_HOME'] = '/app/images'
 
 model = VisionEncoderDecoderModel.from_pretrained("image-captioning-model")
 feature_extractor = ViTImageProcessor.from_pretrained("image-captioning-model")

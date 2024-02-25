@@ -4,13 +4,17 @@ from werkzeug.utils import secure_filename
 from markupsafe import escape
 from caption_service import openAndGenerate
 
-UPLOAD_FOLDER = '/app/images'
+UPLOAD_FOLDER = '/app/static'
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/<username>', methods=['GET', 'POST'])
+@app.route('/image/<path:path>')
+def static_file(path):
+    return app.send_static_file(path)
+
+@app.route('/new-image/<username>', methods=['GET', 'POST'])
 def upload_file(username):
     username = escape(username)
     if request.method == 'POST':
@@ -21,7 +25,7 @@ def upload_file(username):
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        directory = os.path.join(app.config['UPLOAD_FOLDER'], username)
+        directory = os.path.join(UPLOAD_FOLDER, username)
         if not os.path.exists(directory):
             os.makedirs(directory)
         filename = secure_filename(file.filename)
