@@ -2,6 +2,7 @@ import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from markupsafe import escape
+from caption_service import openAndGenerate
 
 UPLOAD_FOLDER = '/app/images'
 
@@ -20,13 +21,16 @@ def upload_file(username):
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        directory = app.config['UPLOAD_FOLDER'] + "/" + username
+        directory = os.path.join(app.config['UPLOAD_FOLDER'], username)
         if not os.path.exists(directory):
             os.makedirs(directory)
         filename = secure_filename(file.filename)
-        file.save(os.path.join(directory, filename))
+        fullname = os.path.join(directory, filename)
+        file.save(fullname)
         flash('File saved:' + filename)
-        return redirect(request.url)
+        caption = openAndGenerate(fullname)
+        flash('Generated caption:' + caption)
+        return caption
     return '''
     <!doctype html>
     <title>Upload new File</title>

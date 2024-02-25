@@ -1,1 +1,4 @@
 Flask==3.0.2
+torch==1.11.*
+transformers==4.*
+pillow==10.1.*
