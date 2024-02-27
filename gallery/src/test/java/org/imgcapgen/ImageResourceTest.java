@@ -7,14 +7,15 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-class CiaoRestTest {
+class ImageResourceTest {
+
     @Test
-    void testHelloEndpoint() {
+    void cacheName() {
         given()
-          .when().get("/ciao/blablabla")
+          .when()
+              .get("/image/cache")
           .then()
              .statusCode(200)
-             .body(is("ciao blablabla"));
+             .body(is("images"));
     }
-
 }
