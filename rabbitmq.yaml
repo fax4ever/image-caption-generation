@@ -1,0 +1,9 @@
+plugins: "rabbitmq_management"
+auth:
+  username: admin
+  password: admin
+  erlangCookie: 1lOBkQT8vBdA4hfoGM8MkgzfEjA27chE
+service:
+  type: LoadBalancer
+image:
+  debug: true

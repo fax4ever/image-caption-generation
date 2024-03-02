@@ -12,10 +12,14 @@ git lfs install
 git clone git@github.com:fax4ever/image-caption-generation.git
 ```
 
-## Helm Chart
+## Helm Charts
 
 ```
 helm repo add openshift https://charts.openshift.io/
+```
+
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
 > helm repo list
@@ -27,23 +31,50 @@ helm repo add openshift https://charts.openshift.io/
 [./]
 
 ``` shell
-kubectl create namespace image-caption-generation
-```
-> kubectl delete namespace image-caption-generation
-
-``` shell
 kubectl config set-context --current --namespace=image-caption-generation
 ```
+
+``` shell
+kubectl delete namespace image-caption-generation
+```
+
+``` shell
+kubectl create namespace image-caption-generation
+```
+
+### RabbitMQ
+
+``` shell
+helm install -f rabbitmq.yaml -n image-caption-generation rabbitmq bitnami/rabbitmq --version 12.12.0
+```
+
+> helm delete rabbitmq
+
+``` shell
+kubectl get pods -w
+```
+
+``` shell
+IP=$(kubectl get service rabbitmq -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+echo $IP
+```
+
+Use `$IP` in place of `172.18.255.200`
+``` shell
+http://172.18.255.200:15672
+```
+* Username: admin
+* Password: admin
 
 ### Infinispan
 
 ``` shell
-helm install -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan
+helm install -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan --version 0.3.2
 ```
 
 > helm upgrade -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan
  
-> helm uninstall infinispan
+> helm delete infinispan
  
 > kubectl delete secret infinispan-generated-secret
 
@@ -57,9 +88,9 @@ PORT=$(kubectl get service infinispan -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
-Use `$IP:$PORT` in place of `172.18.255.200:11222`
+Use `$IP:$PORT` in place of `172.18.255.201:11222`
 ``` shell
-http://172.18.255.200:11222
+http://172.18.255.201:11222
 ```
 * Username: admin
 * Password: admin
@@ -90,9 +121,9 @@ PORT=$(kubectl get service caption -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
-Use `$IP:$PORT` in place of `172.18.255.201:8000`:
+Use `$IP:$PORT` in place of `172.18.255.202:8000`:
 ``` web
-http://172.18.255.201:8000/new-image/ciao
+http://172.18.255.202:8000/new-image/ciao
 ```
 
 #### Gallery Service
@@ -107,9 +138,9 @@ PORT=$(kubectl get service gallery -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
-Use `$IP:$PORT` in place of `172.18.255.202:8080`:
+Use `$IP:$PORT` in place of `172.18.255.203:8080`:
 ``` web
-http://172.18.255.202:8080/image/cache
+http://172.18.255.203:8080/image/cache
 ```
 
 #### Web Application
@@ -124,9 +155,9 @@ PORT=$(kubectl get service webapp -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
-Use `$IP:$PORT` in place of `172.18.255.203:80`:
+Use `$IP:$PORT` in place of `172.18.255.204:80`:
 ``` web
-http://172.18.255.203:80
+http://172.18.255.204:80
 ```
 
 ## Docker: Build and Publish
@@ -213,15 +244,6 @@ kubectl wait --namespace metallb-system \
 --for=condition=ready pod \
 --selector=app=metallb \
 --timeout=90s
-```
-
-``` shell
-kubectl create namespace image-caption-generation
-```
-> kubectl delete namespace image-caption-generation
-
-``` shell
-kubectl config set-context --current --namespace=image-caption-generation
 ```
 
 ``` shell
