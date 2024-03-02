@@ -8,12 +8,14 @@ import org.imgcapgen.gallery.model.Image;
 import org.infinispan.client.hotrod.RemoteCache;
 
 import io.quarkus.infinispan.client.Remote;
+import io.quarkus.runtime.Startup;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
+@Startup
 public class ImageProcessor {
 
    @Inject
