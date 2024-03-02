@@ -15,8 +15,12 @@ git clone git@github.com:fax4ever/image-caption-generation.git
 ## Helm Chart
 
 ```
-helm repo add openshift-helm-charts https://charts.openshift.io/
+helm repo add openshift https://charts.openshift.io/
 ```
+
+> helm repo list
+
+> helm repo remove openshift
 
 ## Kubernetes: Deploy
 
@@ -31,11 +35,13 @@ kubectl create namespace image-caption-generation
 kubectl config set-context --current --namespace=image-caption-generation
 ```
 
+### Infinispan
+
 ``` shell
-helm install -f infinispan.yaml -n image-caption-generation infinispan openshift-helm-charts/infinispan-infinispan
+helm install -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan
 ```
 
-> helm upgrade -f infinispan.yaml -n image-caption-generation infinispan openshift-helm-charts/infinispan-infinispan
+> helm upgrade -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan
  
 > helm uninstall infinispan
  
@@ -44,6 +50,21 @@ helm install -f infinispan.yaml -n image-caption-generation infinispan openshift
 ``` shell
 kubectl get pods -w
 ```
+
+``` shell
+IP=$(kubectl get service infinispan -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+PORT=$(kubectl get service infinispan -o jsonpath="{.spec.ports[0].port}")
+echo $IP:$PORT
+```
+
+Use `$IP:$PORT` in place of `172.18.255.200:11222`
+``` shell
+http://172.18.255.200:11222
+```
+* Username: admin
+* Password: admin
+
+### Application
 
 ``` shell
 kubectl apply -f kubernetes.yaml
@@ -57,10 +78,27 @@ kubectl get all
 kubectl wait pod --all --for=condition=Ready --namespace=${ns}
 ```
 
+#### Caption Service
+
+``` shell
+kubectl logs services/caption 
+```
+
 ``` shell
 IP=$(kubectl get service caption -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
 PORT=$(kubectl get service caption -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
+```
+
+Use `$IP:$PORT` in place of `172.18.255.201:8000`:
+``` web
+http://172.18.255.201:8000/new-image/ciao
+```
+
+#### Gallery Service
+
+``` shell
+kubectl logs services/gallery 
 ```
 
 ``` shell
@@ -69,46 +107,26 @@ PORT=$(kubectl get service gallery -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
+Use `$IP:$PORT` in place of `172.18.255.202:8080`:
+``` web
+http://172.18.255.202:8080/image/cache
+```
+
+#### Web Application
+
+``` shell
+kubectl logs services/webapp 
+```
+
 ``` shell
 IP=$(kubectl get service webapp -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
 PORT=$(kubectl get service webapp -o jsonpath="{.spec.ports[0].port}")
 echo $IP:$PORT
 ```
 
-``` shell
-kubectl logs services/caption 
-```
-
-``` shell
-kubectl logs services/gallery 
-```
-
-``` shell
-kubectl logs services/webapp 
-```
-
-## Gallery Service: Develop and Package
-
-[./gallery/]
-
-``` shell
-./mvnw compile quarkus:dev
-```
-
-``` shell
-./mvnw package
-```
-
-## WebApp: Develop and Package
-
-[./weapp/]
-
-``` shell
-ng serve
-```
-
-``` shell
-ng build --configuration production
+Use `$IP:$PORT` in place of `172.18.255.203:80`:
+``` web
+http://172.18.255.203:80
 ```
 
 ## Docker: Build and Publish
@@ -141,6 +159,30 @@ docker exec -it webapp /bin/sh
 
 ``` shell
 docker build -t docker.io/fax4ever/test:1.0.0-SNAPSHOT .
+```
+
+## Gallery Service: Develop and Package
+
+[./gallery/]
+
+``` shell
+./mvnw compile quarkus:dev
+```
+
+``` shell
+./mvnw package
+```
+
+## WebApp: Develop and Package
+
+[./weapp/]
+
+``` shell
+ng serve
+```
+
+``` shell
+ng build --configuration production
 ```
 
 ## Install Bare Metal Kubernetes: Kind + MetalLB
