@@ -1,4 +1,4 @@
-package org.imgcapgen.gallery.messaging;
+package org.imgcapgen.gallery.messaging.processor;
 
 import java.util.Date;
 

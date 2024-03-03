@@ -1,4 +1,4 @@
-package org.imgcapgen.gallery.producer;
+package org.imgcapgen.gallery.messaging.producer;
 
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;

@@ -1,4 +1,4 @@
-package org.imgcapgen.gallery.producer;
+package org.imgcapgen.gallery.messaging.producer;
 
 public class NewImage {
 

@@ -129,6 +129,10 @@ Use `$IP:$PORT` in place of `172.18.255.202:8000`:
 http://172.18.255.202:8000/new-image/ciao
 ```
 
+```
+kubectl rollout restart deployment caption
+```
+
 #### Gallery Service
 
 ``` shell
@@ -146,6 +150,10 @@ Use `$IP:$PORT` in place of `172.18.255.203:8080`:
 http://172.18.255.203:8080/image/cache
 ```
 
+```
+kubectl rollout restart deployment gallery
+```
+
 #### Web Application
 
 ``` shell
@@ -161,6 +169,10 @@ echo $IP:$PORT
 Use `$IP:$PORT` in place of `172.18.255.204:80`:
 ``` web
 http://172.18.255.204:80
+```
+
+```
+kubectl rollout restart deployment webapp
 ```
 
 ## Docker: Build and Publish
