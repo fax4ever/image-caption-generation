@@ -44,18 +44,21 @@ kubectl create namespace image-caption-generation
 
 ### RabbitMQ
 
+It is crucial to NOT use `rabbitmq` as Kube service name. 
+See: https://stackoverflow.com/questions/67491221/numberformatexception-when-starting-quarkus-on-kubernetes
+
 ``` shell
-helm install -f rabbitmq.yaml -n image-caption-generation rabbitmq bitnami/rabbitmq --version 12.12.0
+helm install -f rabbitmq.yaml -n image-caption-generation img-rabbitmq bitnami/rabbitmq --version 12.12.0
 ```
 
-> helm delete rabbitmq
+> helm delete img-rabbitmq
 
 ``` shell
 kubectl get pods -w
 ```
 
 ``` shell
-IP=$(kubectl get service rabbitmq -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+IP=$(kubectl get service img-rabbitmq -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
 echo $IP
 ```
 
