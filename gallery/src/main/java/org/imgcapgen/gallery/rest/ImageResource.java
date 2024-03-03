@@ -26,7 +26,7 @@ public class ImageResource {
 
    @Inject
    @Remote("images")
-   RemoteCache<String, Image> booksCache;
+   RemoteCache<String, Image> cache;
 
    @Inject
    ObjectMapper objectMapper;
@@ -35,14 +35,14 @@ public class ImageResource {
    @Path("cache")
    @Produces(MediaType.TEXT_PLAIN)
    public String cacheName() {
-      return booksCache.getName();
+      return cache.getName();
    }
 
    @GET
    @Path("/user/{user}")
    public List<Image> imagesByUser(@PathParam("user") String user, @QueryParam("offset") Integer offset,
                                    @QueryParam("limit") Integer limit) {
-      QueryFactory queryFactory = Search.getQueryFactory(booksCache);
+      QueryFactory queryFactory = Search.getQueryFactory(cache);
       Query<Image> query = queryFactory.create("from org.imgcapgen.image where username = :user order by moment desc");
       query.setParameter("user", user);
       if (offset != null) {
@@ -58,7 +58,7 @@ public class ImageResource {
    @Path("/caption/{caption}")
    public List<Image> imagesByCaption(@PathParam("caption") String caption, @QueryParam("offset") Integer offset,
                                    @QueryParam("limit") Integer limit) {
-      QueryFactory queryFactory = Search.getQueryFactory(booksCache);
+      QueryFactory queryFactory = Search.getQueryFactory(cache);
       Query<Image> query = queryFactory.create("from org.imgcapgen.image where caption : :caption order by moment desc");
       query.setParameter("caption", caption);
       if (offset != null) {
@@ -77,7 +77,7 @@ public class ImageResource {
          throws ParseException {
       Date fromDate = objectMapper.getDateFormat().parse(from);
       Date toDate = objectMapper.getDateFormat().parse(to);
-      QueryFactory queryFactory = Search.getQueryFactory(booksCache);
+      QueryFactory queryFactory = Search.getQueryFactory(cache);
       Query<Image> query = queryFactory.create("from org.imgcapgen.image where moment between :from and :to order by moment desc");
       query.setParameter("from", fromDate);
       query.setParameter("to", toDate);
