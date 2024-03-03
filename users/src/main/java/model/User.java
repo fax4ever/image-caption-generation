@@ -18,11 +18,13 @@ public class User {
 
    private String username;
    private String encodedPassword;
+   private Boolean proUser;
 
    @ProtoFactory
-   public User(String username, String encodedPassword) {
+   public User(String username, String encodedPassword, Boolean proUser) {
       this.username = username;
       this.encodedPassword = encodedPassword;
+      this.proUser = proUser;
    }
 
    @Basic
@@ -34,6 +36,11 @@ public class User {
    @ProtoField(value = 2, required = true)
    public String getEncodedPassword() {
       return encodedPassword;
+   }
+
+   @ProtoField(value = 3, required = true)
+   public Boolean getProUser() {
+      return proUser;
    }
 
    public static String oneWayEncode(String password) throws NoSuchAlgorithmException {

@@ -13,4 +13,4 @@ replicatedCache:
     storage: "local-heap"
     startupMode: "NONE"
     indexedEntities: 
-      - " org.imgcapgen.image"
+      - " org.imgcapgen.user"
