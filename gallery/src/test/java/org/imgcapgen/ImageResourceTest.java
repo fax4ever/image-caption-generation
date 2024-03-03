@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
@@ -65,7 +64,8 @@ class ImageResourceTest {
               .body()
               .jsonPath().getList(".", Image.class);
 
-        assertThat(images, notNullValue());
+        assertThat(images).extracting("caption")
+              .containsExactlyInAnyOrder("a living room with a white wall and a dog", "a cat sitting on the sofa");
     }
 
     @Test
@@ -79,6 +79,24 @@ class ImageResourceTest {
               .body()
               .jsonPath().getList(".", Image.class);
 
-        assertThat(images, notNullValue());
+        assertThat(images).extracting("caption")
+              .containsExactlyInAnyOrder("a living room with a white wall and a cat", "a cat sitting on the sofa");
+    }
+
+    @Test
+    void imagesByMoment() {
+        String from = "2024-03-03T13:11:22.908+00:00";
+        String to = "2124-03-03T13:11:22.908+00:00";
+
+        List<Image> images = given()
+              .when()
+              .get("/image/from/" + from + "/to/" + to)
+              .then()
+              .statusCode(200)
+              .extract()
+              .body()
+              .jsonPath().getList(".", Image.class);
+
+        assertThat(images).isNotEmpty();
     }
 }

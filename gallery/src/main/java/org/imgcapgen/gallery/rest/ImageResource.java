@@ -1,5 +1,6 @@
 package org.imgcapgen.gallery.rest;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.Search;
 import org.infinispan.query.dsl.Query;
 import org.infinispan.query.dsl.QueryFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.infinispan.client.Remote;
 import jakarta.inject.Inject;
@@ -24,6 +27,9 @@ public class ImageResource {
    @Inject
    @Remote("images")
    RemoteCache<String, Image> booksCache;
+
+   @Inject
+   ObjectMapper objectMapper;
 
    @GET
    @Path("cache")
@@ -66,12 +72,15 @@ public class ImageResource {
 
    @GET
    @Path("/from/{from}/to/{to}")
-   public List<Image> imagesByMoment(@PathParam("from") Date from, @PathParam("to") Date to,
-                                      @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit) {
+   public List<Image> imagesByMoment(@PathParam("from") String from, @PathParam("to") String to,
+                                      @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit)
+         throws ParseException {
+      Date fromDate = objectMapper.getDateFormat().parse(from);
+      Date toDate = objectMapper.getDateFormat().parse(to);
       QueryFactory queryFactory = Search.getQueryFactory(booksCache);
       Query<Image> query = queryFactory.create("from org.imgcapgen.image where moment between :from and :to order by moment desc");
-      query.setParameter("from", from);
-      query.setParameter("to", to);
+      query.setParameter("from", fromDate);
+      query.setParameter("to", toDate);
       if (offset != null) {
          query.startOffset(offset);
       }
