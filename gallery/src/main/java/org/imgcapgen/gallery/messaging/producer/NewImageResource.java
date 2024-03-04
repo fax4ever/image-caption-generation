@@ -4,6 +4,7 @@ import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.jboss.resteasy.reactive.RestResponse;
 
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -19,7 +20,7 @@ public class NewImageResource {
    @POST
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.TEXT_PLAIN)
-   public RestResponse<Void> newImage(NewImage event) {
+   public RestResponse<Void> newImage(@Valid NewImage event) {
       imageEmitter.send(event);
       return RestResponse.accepted();
    }
