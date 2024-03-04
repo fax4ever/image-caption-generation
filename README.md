@@ -175,6 +175,27 @@ http://172.18.255.204:80
 kubectl rollout restart deployment webapp
 ```
 
+#### Users Service
+
+``` shell
+kubectl logs services/users 
+```
+
+``` shell
+IP=$(kubectl get service users -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+PORT=$(kubectl get service users -o jsonpath="{.spec.ports[0].port}")
+echo $IP:$PORT
+```
+
+Use `$IP:$PORT` in place of `172.18.255.203:9000`:
+``` web
+http://172.18.255.203:9000/user/cache
+```
+
+```
+kubectl rollout restart deployment gallery
+```
+
 ## Docker: Build and Publish
 
 [./]
@@ -188,15 +209,7 @@ docker-compose push
 ```
 
 ``` shell
-docker run -i --rm -p 8080:8080 --name=gallery docker.io/fax4ever/gallery:1.0.0-SNAPSHOT
-```
-
-``` shell
-docker run -i --rm -p 8000:8000 --name=caption docker.io/fax4ever/caption:1.0.0-SNAPSHOT
-```
-
-``` shell
-docker run -i --rm -p 80:80 --name=webapp docker.io/fax4ever/webapp:1.0.0-SNAPSHOT
+docker run -i --rm -p 80:80 --name=test docker.io/fax4ever/test:1.0.0-SNAPSHOT
 ```
 
 ``` shell
