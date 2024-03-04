@@ -1,285 +1,79 @@
 # Image Caption Generation
 
-## Clone
+See extra documentation [here](extra/README.md)
+
+## Build and deploy cycle
+
+The parts from **7** to **10** can be skipped if you don't want update the container images
+
+1. Update the source code
 
 ``` shell
-git lfs install
+git pull
 ```
 
-> sudo dnf install git-lfs
+2. Make `image-caption-generation` the working namespace
 
 ``` shell
-git clone git@github.com:fax4ever/image-caption-generation.git
+kubectl config get-context --current --namespace=image-caption-generation
 ```
 
-## Helm Charts
-
-```
-helm repo add openshift https://charts.openshift.io/
-```
-
-```
-helm repo add bitnami https://charts.bitnami.com/bitnami
-```
-
-> helm repo list
-
-> helm repo remove openshift
-
-## Kubernetes: Deploy
-
-[./]
-
-``` shell
-kubectl config set-context --current --namespace=image-caption-generation
-```
+3. Remove any previous deployment
 
 ``` shell
 kubectl delete namespace image-caption-generation
 ```
 
+4. Recreate an empty namespace for the new deployment
+
 ``` shell
 kubectl create namespace image-caption-generation
 ```
 
-### RabbitMQ
-
-It is crucial to NOT use `rabbitmq` as Kube service name. 
-See: https://stackoverflow.com/questions/67491221/numberformatexception-when-starting-quarkus-on-kubernetes
+5. Install RabbitMQ. Notice that you need to install the [bitnami](https://charts.bitnami.com/bitnami) repository before.
 
 ``` shell
 helm install -f rabbitmq.yaml -n image-caption-generation img-rabbitmq bitnami/rabbitmq --version 12.12.0
 ```
 
-> helm delete img-rabbitmq
-
-``` shell
-kubectl get pods -w
-```
-
-``` shell
-IP=$(kubectl get service img-rabbitmq -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-echo $IP
-```
-
-Use `$IP` in place of `172.18.255.200`
-``` shell
-http://172.18.255.200:15672
-```
-* Username: admin
-* Password: admin
-
-### Infinispan
+6. Install Infinispan. Notice that you need to install [openshift](https://charts.openshift.io/) repository before. 
 
 ``` shell
 helm install -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan --version 0.3.2
 ```
 
-> helm upgrade -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan
- 
-> helm delete infinispan
- 
-> kubectl delete secret infinispan-generated-secret
+7. **Optionally** Compile the Java/Quarkus `gallery` service: 
 
 ``` shell
-kubectl get pods -w
+mvn -f ./gallery/pom.xml clean package
 ```
+
+8. **Optionally** Compile the Java/Quarkus `user` service:
 
 ``` shell
-IP=$(kubectl get service infinispan -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-PORT=$(kubectl get service infinispan -o jsonpath="{.spec.ports[0].port}")
-echo $IP:$PORT
+mvn -f ./users/pom.xml clean package
 ```
 
-Use `$IP:$PORT` in place of `172.18.255.201:11222`
-``` shell
-http://172.18.255.201:11222
-```
-* Username: admin
-* Password: admin
-
-### Application
-
-``` shell
-kubectl apply -f kubernetes.yaml
-```
-
-``` shell
-kubectl get all
-```
-
-``` shell
-kubectl wait pod --all --for=condition=Ready --namespace=${ns}
-```
-
-#### Caption Service
-
-``` shell
-kubectl logs services/caption 
-```
-
-``` shell
-IP=$(kubectl get service caption -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-PORT=$(kubectl get service caption -o jsonpath="{.spec.ports[0].port}")
-echo $IP:$PORT
-```
-
-Use `$IP:$PORT` in place of `172.18.255.202:8000`:
-``` web
-http://172.18.255.202:8000/new-image/ciao
-```
-
-```
-kubectl rollout restart deployment caption
-```
-
-#### Gallery Service
-
-``` shell
-kubectl logs services/gallery 
-```
-
-``` shell
-IP=$(kubectl get service gallery -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-PORT=$(kubectl get service gallery -o jsonpath="{.spec.ports[0].port}")
-echo $IP:$PORT
-```
-
-Use `$IP:$PORT` in place of `172.18.255.203:8080`:
-``` web
-http://172.18.255.203:8080/image/cache
-```
-
-```
-kubectl rollout restart deployment gallery
-```
-
-#### Web Application
-
-``` shell
-kubectl logs services/webapp 
-```
-
-``` shell
-IP=$(kubectl get service webapp -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-PORT=$(kubectl get service webapp -o jsonpath="{.spec.ports[0].port}")
-echo $IP:$PORT
-```
-
-Use `$IP:$PORT` in place of `172.18.255.204:80`:
-``` web
-http://172.18.255.204:80
-```
-
-```
-kubectl rollout restart deployment webapp
-```
-
-#### Users Service
-
-``` shell
-kubectl logs services/users 
-```
-
-``` shell
-IP=$(kubectl get service users -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-PORT=$(kubectl get service users -o jsonpath="{.spec.ports[0].port}")
-echo $IP:$PORT
-```
-
-Use `$IP:$PORT` in place of `172.18.255.203:9000`:
-``` web
-http://172.18.255.203:9000/user/cache
-```
-
-```
-kubectl rollout restart deployment gallery
-```
-
-## Docker: Build and Publish
-
-[./]
+9. **Optionally** Build the Docker images locally:
 
 ``` shell
 docker-compose build
 ```
 
+10. **Optionally** Push the Docker images to the Docker remote repository:
+
 ``` shell
 docker-compose push
 ```
 
-``` shell
-docker run -i --rm -p 80:80 --name=test docker.io/fax4ever/test:1.0.0-SNAPSHOT
-```
+11. Deploy the application, Kubernetes will pull the images from the remote repository:
 
 ``` shell
-docker exec -it webapp /bin/sh
+kubectl apply -f kubernetes.yaml
 ```
+
+12. See all the pods starting...
 
 ``` shell
-docker build -t docker.io/fax4ever/test:1.0.0-SNAPSHOT .
-```
-
-## Gallery Service: Develop and Package
-
-[./gallery/]
-
-``` shell
-./mvnw compile quarkus:dev
-```
-
-``` shell
-./mvnw package
-```
-
-## WebApp: Develop and Package
-
-[./weapp/]
-
-``` shell
-ng serve
-```
-
-``` shell
-ng build --configuration production
-```
-
-## Install Bare Metal Kubernetes: Kind + MetalLB
-
-``` shell
-sudo systemctl start docker
-```
-
-> docker info
-
-``` shell
-kind create cluster --name=blablabla
-```
-
-> kind get clusters
-
-> kubectl cluster-info --context kind-blablabla
-
-> kind delete cluster --name=blablabla
-
-(copied from https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml)
-``` shell
-kubectl apply -f extra/metallb-native.yaml
-```
-
-``` shell
-kubectl wait --namespace metallb-system \
---for=condition=ready pod \
---selector=app=metallb \
---timeout=90s
-```
-
-``` shell
-docker network inspect -f '{{.IPAM.Config}}' kind
-```
-
-if ≠ 172.18.0.0/16
-  modify with IP address [./extra/metallb-config.yaml]
-```
-kubectl apply -f extra/metallb-config.yaml
+kubectl get pods -w
 ```
