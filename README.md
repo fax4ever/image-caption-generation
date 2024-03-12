@@ -15,7 +15,7 @@ git pull
 2. Make `image-caption-generation` the working namespace
 
 ``` shell
-kubectl config get-context --current --namespace=image-caption-generation
+kubectl config set-context --current --namespace=image-caption-generation
 ```
 
 3. Remove any previous deployment
