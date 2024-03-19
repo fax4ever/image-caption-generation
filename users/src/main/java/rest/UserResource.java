@@ -6,6 +6,8 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import io.quarkus.infinispan.client.Remote;
+import io.quarkus.runtime.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -16,6 +18,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import model.User;
 
+@ApplicationScoped
+@Startup
 @Path("user")
 public class UserResource {
 

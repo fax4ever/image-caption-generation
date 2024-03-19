@@ -45,7 +45,8 @@ RUN chown appuser: /app/static
 USER appuser
 
 # Copy the source code into the container.
-COPY . .
+ADD ./image-captioning-model ./image-captioning-model
+COPY app.py caption_service.py message_service.py requirements.txt ./
 
 # Expose the port that the application listens on.
 EXPOSE 8000
