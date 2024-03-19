@@ -77,3 +77,9 @@ kubectl apply -f kubernetes.yaml
 ``` shell
 kubectl get pods -w
 ```
+
+13. Optionally redeploy a service
+
+``` shell
+kubectl rollout restart deployment caption
+```

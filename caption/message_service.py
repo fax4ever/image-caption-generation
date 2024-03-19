@@ -13,12 +13,17 @@ prop = pika.BasicProperties(
 )
 
 def sendMessage(user, file, caption):
-    message = {
-        "user": user,
-        "file": file,
-        "caption": caption
-    }
-    channel.basic_publish(exchange='images', routing_key='images', body=json.dumps(message), properties=prop)
+  global connection
+  global channel
+  if not connection or connection.is_closed:
+    print("Reopening the connection")
+    connection = pika.BlockingConnection(parameters)
+    channel = connection.channel()
+  else:
+    print("Reusing the connection")
+
+  message = { "user": user, "file": file, "caption": caption }
+  channel.basic_publish(exchange='images', routing_key='images', body=json.dumps(message), properties=prop)
 
 def exit_handler():
     connection.close()
