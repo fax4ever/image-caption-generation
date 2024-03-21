@@ -22,6 +22,10 @@ helm repo add openshift https://charts.openshift.io/
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
+```
+helm repo add nginx https://helm.nginx.com/stable
+```
+
 > helm repo list
 
 > helm repo remove openshift
@@ -282,4 +286,29 @@ if ≠ 172.18.0.0/16
   modify with IP address [./extra/metallb-config.yaml]
 ```
 kubectl apply -f extra/metallb-config.yaml
+```
+
+## Ingress NGINX
+
+If you want to create a Kind cluster ready for the Ingress.
+
+``` shell
+kind create cluster --name=blablabla --config extra/kind-ingress-ready.yaml
+```
+
+(copied from  https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
+``` shell
+kubectl apply -f extra/ingress-nginx.yaml
+```
+
+alternatively you can use Helm
+``` shell
+helm install nginx-ingress nginx/nginx-ingress --version 1.1.3
+```
+
+``` shell
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
 ```

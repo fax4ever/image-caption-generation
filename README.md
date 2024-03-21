@@ -5,6 +5,14 @@ See extra documentation [here](extra/README.md)
 ## Build and deploy cycle
 
 The parts from **7** to **10** can be skipped if you don't want update the container images
+The part **13** is only to apply some changes to the cluster if you redeploy and publish a new image of the application
+
+0. Kubernetes cluster with Ingress service enabled
+
+Before to install the services you need a Kubernetes cluster up and running, reachable using the `kubectl`.
+In particular this cluster should support the `Ingress` resources.
+Following, for instance, a guide like the following:
+https://docs.nginx.com/nginx-ingress-controller/installation/installing-nic/installation-with-helm/
 
 1. Update the source code
 
@@ -78,7 +86,7 @@ kubectl apply -f kubernetes.yaml
 kubectl get pods -w
 ```
 
-13. Optionally redeploy a service
+13. **Optionally** redeploy a service
 
 ``` shell
 kubectl rollout restart deployment caption
