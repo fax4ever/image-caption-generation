@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/name: gallery
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: main-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: gallery
+                port:
+                  name: http
+            path: /gallery(/|$)(.*)
+            pathType: Prefix
+          - backend:
+              service:
+                name: webapp
+                port:
+                  name: http
+            path: /web(/|$)(.*)
+            pathType: Prefix

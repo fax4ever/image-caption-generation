@@ -288,7 +288,7 @@ if ≠ 172.18.0.0/16
 kubectl apply -f extra/metallb-config.yaml
 ```
 
-## Ingress NGINX
+## Install Bare Metal Kubernetes: Kind + Ingress NGINX
 
 If you want to create a Kind cluster ready for the Ingress.
 
@@ -296,14 +296,9 @@ If you want to create a Kind cluster ready for the Ingress.
 kind create cluster --name=blablabla --config extra/kind-ingress-ready.yaml
 ```
 
-(copied from  https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
+(copied from https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
 ``` shell
 kubectl apply -f extra/ingress-nginx.yaml
-```
-
-alternatively you can use Helm
-``` shell
-helm install nginx-ingress nginx/nginx-ingress --version 1.1.3
 ```
 
 ``` shell
@@ -311,4 +306,29 @@ kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=90s
+```
+
+##  Install Ingress NGINX with Helm
+
+```
+helm install nginx-ingress nginx-ingress --version 1.1.3 -n nginx-ingress --repo https://helm.nginx.com/stable --create-namespace
+```
+
+## Test Ingress controller
+
+```
+kubectl delete namespaces test
+```
+
+``` shell
+kubectl create namespace test
+```
+
+(copied and adapted from https://kind.sigs.k8s.io/examples/ingress/usage.yaml)
+``` shell
+kubectl apply -f extra/ingress-usage.yaml -n test
+```
+
+``` shell
+http localhost/foo/hostname
 ```
