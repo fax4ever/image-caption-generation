@@ -311,7 +311,10 @@ kubectl wait --namespace ingress-nginx \
 ##  Install Ingress NGINX with Helm
 
 ```
-helm install nginx-ingress nginx-ingress --version 1.1.3 -n nginx-ingress --repo https://helm.nginx.com/stable --create-namespace
+helm upgrade --install ingress-nginx ingress-nginx \
+  --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress-nginx --create-namespace \
+  --set ingressClassResource.default=true
 ```
 
 ## Test Ingress controller
