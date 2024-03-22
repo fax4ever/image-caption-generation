@@ -241,11 +241,11 @@ docker build -t docker.io/fax4ever/test:1.0.0-SNAPSHOT .
 [./weapp/]
 
 ``` shell
-ng serve --serve-path /webapp/
+ng serve --serve-path
 ```
 
 ``` shell
-ng build --configuration production --base-href /webapp/
+ng build --configuration production
 ```
 
 ## Install Bare Metal Kubernetes: Kind + MetalLB + Ingress NGINX

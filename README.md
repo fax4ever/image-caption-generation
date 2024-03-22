@@ -5,8 +5,8 @@ In particular to see how set up an Ingress controller
 
 ## Build and deploy cycle
 
-The parts from **7** to **10** can be skipped if you don't want update the container images
-The part **13** is only to apply some changes to the cluster if you redeploy and publish a new image of the application
+The parts from **7** to **11** can be skipped if you don't want update the container images
+The part **14** is only to apply some changes to the cluster if you redeploy and publish a new image of the application
 
 1. Update the source code
 
@@ -58,37 +58,37 @@ mvn -f ./users/pom.xml clean package
 
 9. **Optionally** Compile the Angular web application:
 
-[./webapp/]
+[./webapp/] <-- run from this subdir
 
 ``` shell
-ng build --configuration production --base-href /webapp/
+ng build --configuration production
 ```
 
-9. **Optionally** Build the Docker images locally:
+10. **Optionally** Build the Docker images locally:
 
 ``` shell
 docker-compose build
 ```
 
-10. **Optionally** Push the Docker images to the Docker remote repository:
+11. **Optionally** Push the Docker images to the Docker remote repository:
 
 ``` shell
 docker-compose push
 ```
 
-11. Deploy the application, Kubernetes will pull the images from the remote repository:
+12. Deploy the application, Kubernetes will pull the images from the remote repository:
 
 ``` shell
 kubectl apply -f kubernetes.yaml
 ```
 
-12. See all the pods starting...
+13. See all the pods starting...
 
 ``` shell
 kubectl get pods -w
 ```
 
-13. **Optionally** redeploy a service
+14. **Optionally** redeploy a service
 
 ``` shell
 kubectl rollout restart deployment caption
