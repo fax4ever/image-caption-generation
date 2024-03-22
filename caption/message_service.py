@@ -1,6 +1,7 @@
 import pika
 import json
 import atexit
+import time
 
 credentials = pika.PlainCredentials('admin', 'admin')
 parameters = pika.ConnectionParameters('img-rabbitmq.image-caption-generation.svc.cluster.local', 5672, '/', credentials)
@@ -11,6 +12,17 @@ prop = pika.BasicProperties(
     content_encoding='utf-8',
     delivery_mode = 1,
 )
+
+def sendMessageWithRetry(user, file, caption):
+  for i in range(100):
+    for attempt in range(10):
+      try:
+        sendMessage(user, file, caption)
+      except:
+        time.sleep(3)
+        print("Retrying... ", i, attempt)
+      else:
+        break
 
 def sendMessage(user, file, caption):
   global connection

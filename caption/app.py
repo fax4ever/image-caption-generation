@@ -3,7 +3,7 @@ from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from markupsafe import escape
 from caption_service import openAndGenerate
-from message_service import sendMessage
+from message_service import sendMessageWithRetry
 
 UPLOAD_FOLDER = '/app/static'
 
@@ -34,7 +34,7 @@ def upload_file(username):
         file.save(fullname)
         flash('File saved:' + filename)
         caption = openAndGenerate(fullname)
-        sendMessage(username, filename, caption)
+        sendMessageWithRetry(username, filename, caption)
         flash('Generated caption:' + caption)
         return caption
     return '''
