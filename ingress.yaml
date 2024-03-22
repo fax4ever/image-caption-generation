@@ -2,52 +2,36 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: main-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
   - http:
       paths:
       - pathType: Prefix
-        path: /caption(/|$)(.*)
+        path: /caption
         backend:
           service:
             name: caption
             port:
               number: 8000
       - pathType: Prefix
-        path: /gallery(/|$)(.*)
+        path: /gallery
         backend:
           service:
             name: gallery
             port:
               number: 8080
       - pathType: Prefix
-        path: /users(/|$)(.*)
+        path: /users
         backend:
           service:
             name: users
             port:
               number: 9000
       - pathType: Prefix
-        path: /webapp(/|$)(.*)
+        path: /webapp
         backend:
           service:
             name: webapp
             port:
               number: 80
-      - pathType: Prefix
-        path: /webapp(/|$)(.*)
-        backend:
-          service:
-            name: infinispan
-            port:
-              number: 11222
-      - pathType: Prefix
-        path: /rabbitmq(/|$)(.*)
-        backend:
-          service:
-            name: img-rabbitmq
-            port:
-              number: 15672

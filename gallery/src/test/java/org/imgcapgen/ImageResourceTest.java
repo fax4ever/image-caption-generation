@@ -36,7 +36,7 @@ class ImageResourceTest {
     void cacheName() {
         given()
           .when()
-              .get("/image/cache")
+              .get("/gallery/image/cache")
           .then()
              .statusCode(200)
              .body(is("images"));
@@ -48,7 +48,7 @@ class ImageResourceTest {
             .contentType(ContentType.JSON)
             .body(new NewImage("fabio", "city.png", "a large building with a clock in the sky"))
           .when()
-            .post("/new-image")
+            .post("/gallery/new-image")
           .then()
             .statusCode(202);
     }
@@ -57,7 +57,7 @@ class ImageResourceTest {
     void imagesByUser() {
         List<Image> images = given()
               .when()
-              .get("/image/user/fax")
+              .get("/gallery/image/user/fax")
               .then()
               .statusCode(200)
               .extract()
@@ -72,7 +72,7 @@ class ImageResourceTest {
     void imagesByCaption() {
         List<Image> images = given()
               .when()
-              .get("/image/caption/cat")
+              .get("/gallery/image/caption/cat")
               .then()
               .statusCode(200)
               .extract()
@@ -90,7 +90,7 @@ class ImageResourceTest {
 
         List<Image> images = given()
               .when()
-              .get("/image/from/" + from + "/to/" + to)
+              .get("/gallery/image/from/" + from + "/to/" + to)
               .then()
               .statusCode(200)
               .extract()

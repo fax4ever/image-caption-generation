@@ -56,6 +56,14 @@ mvn -f ./gallery/pom.xml clean package
 mvn -f ./users/pom.xml clean package
 ```
 
+9. **Optionally** Compile the Angular web application:
+
+[./webapp/]
+
+``` shell
+ng build --configuration production --base-href /webapp/
+```
+
 9. **Optionally** Build the Docker images locally:
 
 ``` shell

@@ -241,30 +241,28 @@ docker build -t docker.io/fax4ever/test:1.0.0-SNAPSHOT .
 [./weapp/]
 
 ``` shell
-ng serve
+ng serve --serve-path /webapp/
 ```
 
 ``` shell
-ng build --configuration production
+ng build --configuration production --base-href /webapp/
 ```
 
-## Install Bare Metal Kubernetes: Kind + MetalLB
+## Install Bare Metal Kubernetes: Kind + MetalLB + Ingress NGINX
+
+1. Start Docker service
 
 ``` shell
 sudo systemctl start docker
 ```
 
-> docker info
+2. Create cluster Kind ready for the ingress controller
 
 ``` shell
-kind create cluster --name=blablabla
+kind create cluster --name=blablabla --config extra/kind-ingress-ready.yaml
 ```
 
-> kind get clusters
-
-> kubectl cluster-info --context kind-blablabla
-
-> kind delete cluster --name=blablabla
+3. Create MetalLB controller
 
 (copied from https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml)
 ``` shell
@@ -288,13 +286,7 @@ if ≠ 172.18.0.0/16
 kubectl apply -f extra/metallb-config.yaml
 ```
 
-## Install Bare Metal Kubernetes: Kind + Ingress NGINX
-
-If you want to create a Kind cluster ready for the Ingress.
-
-``` shell
-kind create cluster --name=blablabla --config extra/kind-ingress-ready.yaml
-```
+4. Create Ingress NGINX controller
 
 (copied from https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
 ``` shell
@@ -319,10 +311,6 @@ helm upgrade --install ingress-nginx ingress-nginx \
 
 ## Test Ingress controller
 
-```
-kubectl delete namespaces test
-```
-
 ``` shell
 kubectl create namespace test
 ```
@@ -334,4 +322,8 @@ kubectl apply -f extra/ingress-usage.yaml -n test
 
 ``` shell
 http localhost/foo/hostname
+```
+
+```
+kubectl delete namespaces test
 ```

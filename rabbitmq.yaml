@@ -2,5 +2,7 @@ plugins: "rabbitmq_management"
 auth:
   username: admin
   password: admin
+service:
+  type: LoadBalancer
 image:
   debug: true

@@ -11,11 +11,11 @@ app = Flask(__name__)
 app.secret_key = "super secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/image/<path:path>')
+@app.route('/caption/image/<path:path>')
 def static_file(path):
     return app.send_static_file(path)
 
-@app.route('/new-image/<username>', methods=['GET', 'POST'])
+@app.route('/caption/new-image/<username>', methods=['GET', 'POST'])
 def upload_file(username):
     username = escape(username)
     if request.method == 'POST':

@@ -18,7 +18,7 @@ public class UserResourceTest {
    void cacheName() {
       given()
             .when()
-            .get("/user/cache")
+            .get("/users/user/cache")
             .then()
             .statusCode(200)
             .body(is("users"));
@@ -31,7 +31,7 @@ public class UserResourceTest {
             .contentType(ContentType.JSON)
             .body(body)
             .when()
-            .post("/user")
+            .post("/users/user")
             .then()
             .statusCode(202);
    }
@@ -47,7 +47,7 @@ public class UserResourceTest {
                .contentType(ContentType.JSON)
                .body(user)
                .when()
-               .post("/user")
+               .post("/users/user")
                .then()
                .statusCode(202);
       }
@@ -56,7 +56,7 @@ public class UserResourceTest {
             .contentType(ContentType.JSON)
             .body(new ValidatePassword("not-exising", "not-existing"))
             .when()
-            .post("/user/validate")
+            .post("/users/user/validate")
             .then()
             .extract()
             .body()
@@ -68,7 +68,7 @@ public class UserResourceTest {
             .contentType(ContentType.JSON)
             .body(new ValidatePassword("bob", "wrong"))
             .when()
-            .post("/user/validate")
+            .post("/users/user/validate")
             .then()
             .extract()
             .body()
@@ -80,7 +80,7 @@ public class UserResourceTest {
             .contentType(ContentType.JSON)
             .body(new ValidatePassword("bob", "blablabla"))
             .when()
-            .post("/user/validate")
+            .post("/users/user/validate")
             .then()
             .extract()
             .body()
@@ -93,7 +93,7 @@ public class UserResourceTest {
             .contentType(ContentType.JSON)
             .body(new ValidatePassword("joe", "easypass"))
             .when()
-            .post("/user/validate")
+            .post("/users/user/validate")
             .then()
             .extract()
             .body()
