@@ -93,3 +93,70 @@ kubectl get pods -w
 ``` shell
 kubectl rollout restart deployment caption
 ```
+
+## Play with the App
+
+This demo is executable without the need of a webapp implemented.
+
+1. Crate users
+
+```
+http POST http://localhost/users/user <<<'{"name":"norman", "pass":"norman", "pro":true}'
+```
+
+```
+http POST http://localhost/users/user <<<'{"name":"victor", "pass":"victor", "pro":false}'
+```
+
+2. Verify login service
+
+```
+http POST http://localhost/users/user/validate <<<'{"username":"fabio", "password":"fabio"}'
+```
+
+```
+http POST http://localhost/users/user/validate <<<'{"username":"norman", "password":"wrong"}'
+```
+
+```
+http POST http://localhost/users/user/validate <<<'{"username":"norman", "password":"norman"}'
+```
+
+```
+http POST http://localhost/users/user/validate <<<'{"username":"victor", "password":"victor"}'
+```
+
+3. Publish images
+
+Go to the page http://localhost/caption/new-image/norman and insert some images
+In this case the images are generated for the user `norman`.
+
+Go to the page http://localhost/caption/new-image/victor and insert some images
+In this case the images are generated for the user `victor`.
+
+4. Verify that images are stored and are retrievable from the caption service.
+
+Go to the page http://localhost/caption/image/victor/empire-state-building.png
+
+5. Find all images belonging to `norman` / `victor`
+
+```
+http http://localhost/gallery/image/user/norman
+```
+
+```
+http http://localhost/gallery/image/user/victor
+```
+6. Find all images having a capture containing the term `cat` / `clock`
+
+```
+http http://localhost/gallery/image/caption/cat
+```
+
+```
+http http://localhost/gallery/image/caption/clock
+```
+
+7. Test that the webapp is reachable
+
+Navigate to http://localhost/
