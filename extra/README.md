@@ -300,6 +300,78 @@ kubectl wait --namespace ingress-nginx \
   --timeout=90s
 ```
 
+## Install Bare Metal Kubernetes: Kind + MetalLB + Ingress NGINX with Podman
+
+1. Start Docker service
+
+``` shell
+podman machine reset
+```
+
+``` shell
+podman machine init
+```
+
+``` shell
+podman machine set --rootful --cpus 6 --memory 16384
+```
+
+``` shell
+podman machine start
+```
+
+``` shell
+alias docker='podman'
+```
+
+2. Create cluster Kind ready for the ingress controller
+
+``` shell
+export KIND_EXPERIMENTAL_PROVIDER=podman
+```
+
+``` shell
+kind create cluster --name=blablabla --config extra/kind-ingress-ready.yaml
+```
+
+3. Create MetalLB controller
+
+(copied from https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml)
+``` shell
+kubectl apply -f extra/metallb-native.yaml
+```
+
+``` shell
+kubectl wait --namespace metallb-system \
+--for=condition=ready pod \
+--selector=app=metallb \
+--timeout=90s
+```
+
+``` shell
+podman network inspect -f '{{range .Subnets}}{{if eq (len .Subnet.IP) 4}}{{.Subnet}}{{end}}{{end}}' kind
+```
+
+if ≠ 10.89.0.0/24
+modify with IP address [./extra/metallb-podman-config.yaml]
+```
+kubectl apply -f extra/metallb-podman-config.yaml
+```
+
+4. Create Ingress NGINX controller
+
+(copied from https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
+``` shell
+kubectl apply -f extra/ingress-nginx.yaml
+```
+
+``` shell
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
+```
+
 ##  Install Ingress NGINX with Helm
 
 ```
@@ -324,6 +396,29 @@ kubectl apply -f extra/ingress-usage.yaml -n test
 http localhost/foo/hostname
 ```
 
+``` shell
+kubectl delete namespaces test
 ```
+
+## Test LoadBalancer controllers
+
+``` shell
+kubectl create namespace test
+```
+
+(copied and adapted from https://kind.sigs.k8s.io/examples/loadbalancer/usage.yaml)
+``` shell
+kubectl apply -f extra/loadbalancer-usage.yaml -n test
+```
+
+``` shell
+LB_IP=$(kubectl get svc/foo-service -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+# should output foo and bar on separate lines 
+for _ in {1..10}; do
+  curl ${LB_IP}:5678
+done
+```
+
+``` shell
 kubectl delete namespaces test
 ```
