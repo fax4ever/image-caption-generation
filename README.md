@@ -5,8 +5,8 @@ In particular to see how set up an Ingress controller
 
 ## Build and deploy cycle
 
-The parts from **7** to **11** can be skipped if you don't want update the container images
-The part **14** is only to apply some changes to the cluster if you redeploy and publish a new image of the application
+The parts from **7** to **12** can be skipped if you don't want update the container images
+The part **15** is only to apply some changes to the cluster if you redeploy and publish a new image of the application
 
 1. Update the source code
 
@@ -44,19 +44,31 @@ helm install -f rabbitmq.yaml -n image-caption-generation img-rabbitmq bitnami/r
 helm install -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan --version 0.3.2
 ```
 
-7. **Optionally** Compile the Java/Quarkus `gallery` service: 
+7. **Optionally** Create some port forwarding
+
+For instance if the Kubernetes does not have a LoadBalancer service.
+
+``` shell
+kubectl port-forward services/img-rabbitmq 15672
+```
+
+``` shell
+kubectl port-forward services/infinispan 11222
+```
+
+8. **Optionally** Compile the Java/Quarkus `gallery` service: 
 
 ``` shell
 mvn -f ./gallery/pom.xml clean package
 ```
 
-8. **Optionally** Compile the Java/Quarkus `user` service:
+9. **Optionally** Compile the Java/Quarkus `user` service:
 
 ``` shell
 mvn -f ./users/pom.xml clean package
 ```
 
-9. **Optionally** Compile the Angular web application:
+10. **Optionally** Compile the Angular web application:
 
 [./webapp/] <-- run from this subdir
 
@@ -64,31 +76,31 @@ mvn -f ./users/pom.xml clean package
 ng build --configuration production
 ```
 
-10. **Optionally** Build the Docker images locally:
+11. **Optionally** Build the Docker images locally:
 
 ``` shell
 docker-compose build
 ```
 
-11. **Optionally** Push the Docker images to the Docker remote repository:
+12. **Optionally** Push the Docker images to the Docker remote repository:
 
 ``` shell
 docker-compose push
 ```
 
-12. Deploy the application, Kubernetes will pull the images from the remote repository:
+13. Deploy the application, Kubernetes will pull the images from the remote repository:
 
 ``` shell
 kubectl apply -f kubernetes.yaml
 ```
 
-13. See all the pods starting...
+14. See all the pods starting...
 
 ``` shell
 kubectl get pods -w
 ```
 
-14. **Optionally** redeploy a service
+15. **Optionally** redeploy a service
 
 ``` shell
 kubectl rollout restart deployment caption

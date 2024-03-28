@@ -300,7 +300,7 @@ kubectl wait --namespace ingress-nginx \
   --timeout=90s
 ```
 
-## Install Bare Metal Kubernetes: Kind + MetalLB + Ingress NGINX with Podman
+## Install Bare Metal Kubernetes: Kind + Ingress NGINX with Podman
 
 1. Start Docker service
 
@@ -313,7 +313,7 @@ podman machine init
 ```
 
 ``` shell
-podman machine set --rootful --cpus 6 --memory 16384
+podman machine set --rootful --cpus 4 --memory 16384
 ```
 
 ``` shell
@@ -333,32 +333,6 @@ export KIND_EXPERIMENTAL_PROVIDER=podman
 ``` shell
 kind create cluster --name=blablabla --config extra/kind-ingress-ready.yaml
 ```
-
-3. Create MetalLB controller
-
-(copied from https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml)
-``` shell
-kubectl apply -f extra/metallb-native.yaml
-```
-
-``` shell
-kubectl wait --namespace metallb-system \
---for=condition=ready pod \
---selector=app=metallb \
---timeout=90s
-```
-
-``` shell
-podman network inspect -f '{{range .Subnets}}{{if eq (len .Subnet.IP) 4}}{{.Subnet}}{{end}}{{end}}' kind
-```
-
-if ≠ 10.89.0.0/24
-modify with IP address [./extra/metallb-podman-config.yaml]
-```
-kubectl apply -f extra/metallb-podman-config.yaml
-```
-
-4. Create Ingress NGINX controller
 
 (copied from https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
 ``` shell
