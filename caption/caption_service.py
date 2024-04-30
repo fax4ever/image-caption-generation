@@ -6,9 +6,9 @@ from PIL import Image
 os.environ['TRANSFORMERS_CACHE'] = '/app/images'
 os.environ['HF_HOME'] = '/app/images'
 
-model = VisionEncoderDecoderModel.from_pretrained("image-captioning-model")
-feature_extractor = ViTImageProcessor.from_pretrained("image-captioning-model")
-tokenizer = AutoTokenizer.from_pretrained("image-captioning-model")
+model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+feature_extractor = ViTImageProcessor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)

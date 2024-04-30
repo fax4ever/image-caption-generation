@@ -41,11 +41,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN mkdir -p /app/static
 RUN chown appuser: /app/static
 
+RUN mkdir -p /nonexistent
+RUN chown appuser: /nonexistent
+
 # Switch to the non-privileged user to run the application.
 USER appuser
 
 # Copy the source code into the container.
-ADD ./image-captioning-model ./image-captioning-model
 COPY app.py caption_service.py message_service.py requirements.txt ./
 
 # Expose the port that the application listens on.

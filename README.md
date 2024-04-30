@@ -41,7 +41,7 @@ helm install -f rabbitmq.yaml -n image-caption-generation img-rabbitmq bitnami/r
 6. Install Infinispan. Notice that you need to install [openshift](https://charts.openshift.io/) repository before. 
 
 ``` shell
-helm install -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan-infinispan --version 0.3.2
+helm install -f infinispan.yaml -n image-caption-generation infinispan openshift/infinispan --version 0.3.2
 ```
 
 7. **Optionally** Create some port forwarding
