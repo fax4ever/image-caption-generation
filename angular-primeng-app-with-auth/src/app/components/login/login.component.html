@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Caption Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .full-screen-background {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background: url('https://source.unsplash.com/featured/?technology') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.361);
+            width: 360px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .form-label, .error-message, a {
+            color: #333;
+        }
+        .form-input, .button, a {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            display: block;
+        }
+        .error-message {
+            font-size: 0.8rem;
+            color: #ff3860;
+        }
+        .button {
+            background-color: #007bff;
+            border: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .registration-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="full-screen-background">
+        <div class="container">
+            <h1>IMAGE CAPTION GENERATOR</h1>
+            <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+                <div class="field">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" pInputText formControlName="email" class="form-input" name="email" placeholder="Type your email">
+                    <small *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+                        <div *ngIf="email.errors?.['required']">Email is required.</div>
+                        <div *ngIf="email.errors?.['email']">Email should be valid</div>
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" pInputText formControlName="password" class="form-input" name="password" placeholder="Type your password">
+                    <small *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
+                        <div *ngIf="password.errors?.['required']">Password is required.</div>
+                    </small>
+                </div>
+                <p-button label="SIGN IN" styleClass="button" [disabled]="loginForm.invalid" type="submit"></p-button>
+                <div class="registration-link">Not a member? <a routerLink="/register">Register</a></div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

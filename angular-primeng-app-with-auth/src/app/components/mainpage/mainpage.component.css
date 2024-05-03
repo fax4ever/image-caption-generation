@@ -1,0 +1,33 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url('https://source.unsplash.com/featured/?nature,water') no-repeat center center fixed;
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;  /* Added to position the button absolutely within the body */
+}
+
+.my-photos-btn {
+    position: absolute;  /* Changed to position absolutely */
+    top: 10px;  /* Distance from the top */
+    right: 10px;  /* Distance from the right */
+    margin: 0;  /* Adjusted margin */
+    padding: 10px 20px;
+    background-color: #516fc3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.img-fluid {
+    max-width: 100%;  /* Ensures the image is never wider than its container */
+    height: auto;     /* Maintains the aspect ratio */
+}
+

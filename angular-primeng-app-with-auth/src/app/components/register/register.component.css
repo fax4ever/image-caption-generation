@@ -1,0 +1,16 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevents scrollbars */
+    .full-screen-background {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full height of the viewport */
+        width: 100vw; /* Full width of the viewport */
+        background: url('https://source.unsplash.com/featured/?technology') no-repeat center center fixed;
+        background-size: cover; /* Cover the entire screen */
+    }
+    
+}

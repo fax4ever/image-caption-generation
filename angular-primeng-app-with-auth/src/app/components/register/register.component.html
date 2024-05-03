@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeng/resources/themes/saga-blue/theme.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeng/resources/primeng.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://source.unsplash.com/featured/?office') no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .p-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 400px; /* Adjusted width for a more vertical look */
+        }
+        
+        .field {
+            margin-bottom: 20px; /* Increased margin for better vertical spacing */
+        }
+        .p-inputtext {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .p-error {
+            color: #ff3860;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+        .p-button {
+            width: 100%;
+            background-color: #007bff;
+            border: none;
+            margin-top: 8px;
+        }
+        .p-button:hover {
+            background-color: #0056b3;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <form [formGroup]="registerForm" (ngSubmit)="submitDetails()" class="container">
+        <p-card header="Register">
+            <div class="field">
+                <label for="fullName" class="form-label">FullName</label>
+                <input type="text" pInputText formControlName="fullName" placeholder="Type your name">
+                <small *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)" class="p-error">
+                    <div *ngIf="fullName.errors?.['required']">Name is required.</div>
+                    <div *ngIf="fullName.errors?.['pattern']">Enter a valid Name</div>
+                </small>
+            </div>
+            <div class="field">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" pInputText formControlName="email" placeholder="Type your email">
+                <small *ngIf="email.invalid && (email.dirty || email.touched)" class="p-error">
+                    <div *ngIf="email.errors?.['required']">Email is required.</div>
+                    <div *ngIf="email.errors?.['email']">Email should be valid</div>
+                </small>
+            </div>
+            <div class="field">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" pInputText formControlName="password" placeholder="Type your password">
+                <small *ngIf="password.invalid && (password.dirty || password.touched)" class="p-error">
+                    <div *ngIf="password.errors?.['required']">Password is required.</div>
+                </small>
+            </div>
+            <div class="field">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" pInputText formControlName="confirmPassword" placeholder="Confirm Password">
+                <small *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="p-error">
+                    <div *ngIf="confirmPassword.errors?.['required']">Confirm the password</div>
+                </small>
+                <small *ngIf="registerForm.errors?.['passwordMismatch'] && confirmPassword.valid && password.valid" class="p-error">
+                    Passwords must match
+                </small>
+            </div>
+            <p-button label="Register" [disabled]="registerForm.invalid"></p-button>
+            <div class="mt-2">Already a member? <a routerLink="/login">Login</a></div>
+        </p-card>
+    </form>
+</body>
+</html>

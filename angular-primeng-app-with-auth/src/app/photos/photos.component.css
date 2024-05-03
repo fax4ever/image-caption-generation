@@ -1,0 +1,64 @@
+.background {
+  min-height: 100vh; /* Full viewport height */
+  background-size: cover; /* Cover the entire div */
+  background-position: center; /* Center the background image */
+  width: 100vw; /* Full viewport width */
+  display: flex;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+}
+
+.content {
+  color: #fff; /* Ensure text is visible on potentially dark backgrounds */
+  text-align: center; /* Center-align text */
+  padding: 20px; /* Padding around content */
+  max-width: 960px; /* Max width for better readability on larger screens */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for better readability */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5); /* Soft shadow for depth */
+}
+
+h1 {
+  font-size: 2.5rem; /* Larger font size */
+  font-weight: 300; /* Lighter font-weight */
+  margin-bottom: 20px; /* Space below the heading */
+  text-transform: uppercase; /* UPPERCASE LETTERS */
+  letter-spacing: 1.5px; /* More spacing between letters */
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+.photo-box img {
+  width: 80%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.upload-btn {
+  display: inline-block;
+  background-color: #007bffc1; /* Slightly transparent blue */
+  color: white;
+  padding: 12px 24px; /* Slightly larger padding for a better visual impact */
+  margin: 20px 0;
+  border: none; /* Remove border for a cleaner look */
+  border-radius: 6px; /* Rounded corners */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  font-family: 'Poppins', sans-serif; /* Use Poppins font */
+  font-size: 16px; /* Slightly larger font size for readability */
+  font-weight: 600; /* Medium weight for better legibility */
+  text-transform: uppercase; /* Uppercase text for a more styled look */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.upload-btn:hover, .upload-btn:focus {
+  background-color: #0056b3; /* Darker shade of blue on hover/focus */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Increased shadow for a lifted effect */
+  color: #ffffff; /* Ensure text color is white for contrast */
+}

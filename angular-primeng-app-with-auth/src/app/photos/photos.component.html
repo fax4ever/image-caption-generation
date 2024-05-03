@@ -1,0 +1,16 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<div class="background" [style.background-image]="'url(' + currentBackground + ')'">
+  <div class="content">
+    <h1> Welcome to your photo gallery.</h1>
+    <div class="photo-grid">
+      <div *ngFor="let image of images" class="photo-box">
+        <img [src]="image" alt="Uploaded image">
+      </div>
+    </div>
+    <!-- Navigation Button -->
+    <a [routerLink]="['/mainpage']" class="upload-btn">Upload More Images to Get Captions</a>
+  </div>
+</div>

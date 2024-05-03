@@ -1,0 +1,119 @@
+User
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Caption Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://source.unsplash.com/featured/?nature,water') no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+       
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 600px;
+           
+        }
+        .my-photos-btn {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #516fc3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+  }          
+        h2 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body ng-app="angular-priming-app-with-auth" ng-controller="MainController">
+    <a href="http://localhost:4200/photos" class="my-photos-btn">My Photos</a>
+    <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
+    </nav>
+    <div class="container shadow-lg">
+        <h2>Upload an Image</h2>
+        <form>
+            <div class="form-group">
+                <input type="file" file-model="myFile" class="form-control-file" onchange="angular.element(this).scope().fileChanged(this)">
+            </div>
+            <button class="btn btn-primary btn-block">Generate Caption</button>
+        </form>
+        <div class="mt-5" ng-if="caption">
+            <h5>Image Caption: </h5> 
+            <p class="lead">{{ caption }}</p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    <script>
+    angular.module('angular-priming-app-with-auth', [])
+    .controller('MainController', function($scope, $http) {
+        $scope.uploadFile = function() {
+            var formData = new FormData();
+            formData.append('file', $scope.myFile);
+
+            $http.post('YOUR_BACKEND_URL', formData, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .then(function(response) {
+                $scope.caption = response.data.caption;
+            })
+            .catch(function(error) {
+                console.error('Error uploading file:', error);
+            });
+        };
+
+        $scope.fileChanged = function(element) {
+            $scope.myFile = element.files[0];
+            $scope.$apply();
+        };
+    })
+    .directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function() {
+                    scope.$apply(function() {
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);
+    </script>
+</body>
+</html>
