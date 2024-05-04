@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { HomeComponent } from './components/home/home.component';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -22,10 +21,8 @@ import { PhotosComponent } from './photos/photos.component';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent,
     MainpageComponent,
-    PhotosComponent,
-   
+    PhotosComponent
   ],
   imports: [
     BrowserModule,

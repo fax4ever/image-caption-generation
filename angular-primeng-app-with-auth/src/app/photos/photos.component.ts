@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-photos',
@@ -29,6 +30,8 @@ export class PhotosComponent implements OnInit {
   currentBackgroundIndex: number = 0;
   currentBackground: string = this.backgroundImages[0];
 
+  constructor(private router: Router) { }
+
   ngOnInit(): void {
     const username = 'User'; // This could be dynamic depending on your application's user management
     alert(`Hi ${username}! Welcome to your photo gallery.`);
@@ -46,5 +49,10 @@ export class PhotosComponent implements OnInit {
 
       reader.readAsDataURL(file);
     }
+  }
+
+  logOut() {
+    sessionStorage.clear();
+    this.router.navigate(['login']);
   }
 }

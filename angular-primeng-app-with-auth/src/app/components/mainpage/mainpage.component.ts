@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mainpage',
@@ -6,7 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./mainpage.component.css']
 })
 export class MainpageComponent {
-[x: string]: any;
-caption: any;
+  [x: string]: any;
+  caption: any;
 
+  constructor(private router: Router) { }
+
+  logOut() {
+    sessionStorage.clear();
+    this.router.navigate(['login']);
+  }
+
+  photos() {
+    this.router.navigate(['photos']);
+  }
 }

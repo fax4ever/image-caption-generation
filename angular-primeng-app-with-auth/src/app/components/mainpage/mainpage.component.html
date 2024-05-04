@@ -57,9 +57,10 @@ User
     </style>
 </head>
 <body ng-app="angular-priming-app-with-auth" ng-controller="MainController">
-    <a href="http://localhost:4200/photos" class="my-photos-btn">My Photos</a>
     <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
     </nav>
+    <p-button class="nav-link my-logout-btn" label="Sign out" (onClick)="logOut()"></p-button>
+    <p-button class="nav-link my-photos-btn" label="My Photos" (onClick)="photos()"></p-button>
     <div class="container shadow-lg">
         <h2>Upload an Image</h2>
         <form>

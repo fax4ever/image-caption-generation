@@ -62,3 +62,16 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Increased shadow for a lifted effect */
   color: #ffffff; /* Ensure text color is white for contrast */
 }
+
+.my-logout-btn {
+  position: absolute;  /* Changed to position absolutely */
+  top: 100px;  /* Distance from the top */
+  right: 20px;  /* Distance from the right */
+  margin: 0;  /* Adjusted margin */
+  padding: 10px 20px;
+  background-color: #516fc3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
