@@ -26,7 +26,7 @@ public class UserResourceTest {
 
    @Test
    void addImage() {
-      String body = "{\"name\":\"mark\", \"pass\":\"mark\", \"pro\":true}";
+      String body = "{\"userName\":\"mark\", \"password\":\"mark\", \"pro\":true}";
       given()
             .contentType(ContentType.JSON)
             .body(body)
@@ -38,8 +38,8 @@ public class UserResourceTest {
 
    @Test
    void validatePassword() {
-      NewUser bob = new NewUser("bob", "blablabla", false);
-      NewUser joe = new NewUser("joe", "easypass", true);
+      NewUser bob = new NewUser("bob", "blablabla", false, "Bob Red", "bob@bla.it");
+      NewUser joe = new NewUser("joe", "easypass", true, "Joe Black", "joe@easy.it");
       NewUser[] users = {bob, joe};
 
       for (NewUser user : users) {

@@ -38,7 +38,7 @@ public class UserResource {
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.TEXT_PLAIN)
    public RestResponse<Void> createUser(@Valid NewUser event) throws NoSuchAlgorithmException {
-      User user = new User(event.name, User.oneWayEncode(event.pass), event.pro);
+      User user = new User(event.userName, User.oneWayEncode(event.password), event.pro, event.fullName, event.email);
       cache.put(user.getUsername(), user);
       return RestResponse.accepted();
    }

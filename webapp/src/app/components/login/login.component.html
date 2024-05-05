@@ -65,16 +65,15 @@
             <h1>IMAGE CAPTION GENERATOR</h1>
             <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
                 <div class="field">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="text" pInputText formControlName="email" class="form-input" name="email" placeholder="Type your email">
-                    <small *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
-                        <div *ngIf="email.errors?.['required']">Email is required.</div>
-                        <div *ngIf="email.errors?.['email']">Email should be valid</div>
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" pInputText formControlName="username" class="form-input" name="username" placeholder="Type your username">
+                    <small *ngIf="username.invalid && (username.dirty || username.touched)" class="error-message">
+                        <div *ngIf="username.errors?.['required']">Username is required.</div>
                     </small>
                 </div>
                 <div class="field">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" pInputText formControlName="password" class="form-input" name="password" placeholder="Type your password">
+                    <input type="password" id="password" pInputText formControlName="password" class="form-input" name="password" placeholder="Type your password">
                     <small *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
                         <div *ngIf="password.errors?.['required']">Password is required.</div>
                     </small>

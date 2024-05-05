@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Login } from 'src/app/interfaces/login';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent {
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', Validators.required],
     password: ['', Validators.required]
   })
 
@@ -22,26 +23,34 @@ export class LoginComponent {
     private msgService: MessageService
   ) { }
 
-  get email() {
-    return this.loginForm.controls['email'];
+  get username() {
+    return this.loginForm.controls['username'];
   }
-  get password() { return this.loginForm.controls['password']; }
+
+  get password() {
+    return this.loginForm.controls['password'];
+  }
 
   loginUser() {
-    const { email, password } = this.loginForm.value;
-    this.authService.getUserByEmail(email as string).subscribe(
+    var login = this.loginForm.value as Login;
+
+    this.authService.validate(login).subscribe(
       response => {
-        if (response.length > 0 && response[0].password === password) {
-          sessionStorage.setItem('email', email as string);
+        if (response.valid) {
+          sessionStorage.setItem('username', response.username);
+          if (response.proUser) {
+            sessionStorage.setItem('pro', "true");
+          } else {
+            sessionStorage.removeItem('pro')
+          }
           this.router.navigate(['/mainpage']);
         } else {
-          this.msgService.add({ severity: 'error', summary: 'Error', detail: 'email or password is wrong' });
+          this.msgService.add({ severity: 'error', summary: 'Error', detail: 'username or password is wrong' });
         }
       },
       error => {
         this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
       }
-
     )
   }
 }

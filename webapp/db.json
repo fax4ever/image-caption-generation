@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "userName": "fax4ever",
+      "fullName": "Fabio Massimo Ercoli",
+      "email": "fax@emai.com",
+      "password": "bla",
+      "pro": true,
+      "id": "32f7"
+    },
+    {
+      "id": "abb6",
+      "userName": "markx",
+      "fullName": "Mark Xion",
+      "email": "mark@bla.it",
+      "password": "bla",
+      "pro": true
+    }
+  ]
+}
