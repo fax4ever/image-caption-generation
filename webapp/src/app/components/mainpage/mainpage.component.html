@@ -63,58 +63,17 @@ User
     <p-button class="nav-link my-photos-btn" label="My Photos" (onClick)="photos()"></p-button>
     <div class="container shadow-lg">
         <h2>Upload an Image</h2>
-        <form>
+        <form enctype="multipart/form-data" [formGroup]="imageForm" (ngSubmit)="submitDetails()">
             <div class="form-group">
-                <input type="file" file-model="myFile" class="form-control-file" onchange="angular.element(this).scope().fileChanged(this)">
+                <input type="file" formControlName="image" file-model="image" class="form-control-file"
+                (change)="changedImage($event)">
             </div>
-            <button class="btn btn-primary btn-block">Generate Caption</button>
+            <input type="submit" label="Generate Caption" [disabled]="imageForm.invalid" />
         </form>
         <div class="mt-5" ng-if="caption">
             <h5>Image Caption: </h5> 
             <p class="lead">{{ caption }}</p>
         </div>
     </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-    <script>
-    angular.module('angular-priming-app-with-auth', [])
-    .controller('MainController', function($scope, $http) {
-        $scope.uploadFile = function() {
-            var formData = new FormData();
-            formData.append('file', $scope.myFile);
-
-            $http.post('YOUR_BACKEND_URL', formData, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            })
-            .then(function(response) {
-                $scope.caption = response.data.caption;
-            })
-            .catch(function(error) {
-                console.error('Error uploading file:', error);
-            });
-        };
-
-        $scope.fileChanged = function(element) {
-            $scope.myFile = element.files[0];
-            $scope.$apply();
-        };
-    })
-    .directive('fileModel', ['$parse', function ($parse) {
-        return {
-            restrict: 'A',
-            link: function(scope, element, attrs) {
-                var model = $parse(attrs.fileModel);
-                var modelSetter = model.assign;
-
-                element.bind('change', function() {
-                    scope.$apply(function() {
-                        modelSetter(scope, element[0].files[0]);
-                    });
-                });
-            }
-        };
-    }]);
-    </script>
 </body>
 </html>
