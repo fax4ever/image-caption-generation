@@ -396,3 +396,23 @@ done
 ``` shell
 kubectl delete namespaces test
 ```
+
+## Change the webapp and apply the changes to the Kube cluster
+
+[./webapp/] <-- run from this subdir
+
+``` shell
+ng build --configuration production
+```
+
+``` shell
+docker build -t docker.io/fax4ever/webapp:1.0.0-SNAPSHOT .
+```
+
+``` shell
+docker image push docker.io/fax4ever/webapp:1.0.0-SNAPSHOT
+```
+
+``` shell
+kubectl rollout restart deployment webapp
+```

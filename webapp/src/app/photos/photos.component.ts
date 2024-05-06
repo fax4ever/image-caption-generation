@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Image } from '../interfaces/image';
+import { ImagesService } from '../services/images.service';
 
 @Component({
   selector: 'app-photos',
@@ -7,21 +9,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./photos.component.css']
 })
 export class PhotosComponent implements OnInit {
-  images: string[] = [
-    'https://via.placeholder.com/250?text=Image+1',
-    'https://via.placeholder.com/250?text=Image+2',
-    'https://via.placeholder.com/250?text=Image+3',
-    'https://via.placeholder.com/250?text=Image+4',
-    'https://via.placeholder.com/250?text=Image+5',
-    'https://via.placeholder.com/250?text=Image+6',
-    'https://via.placeholder.com/250?text=Image+7',
-    'https://via.placeholder.com/250?text=Image+8',
-    'https://via.placeholder.com/250?text=Image+9',
-    'https://via.placeholder.com/250?text=Image+10',
-    'https://via.placeholder.com/250?text=Image+11',
-    'https://via.placeholder.com/250?text=Image+12'
-  ]; // Sample images for the grid
-   backgroundImages: string[] = [
+  page = 0;
+  images: Image[] = [];
+  user = sessionStorage.getItem('username');
+  pro : boolean = sessionStorage.getItem('pro') != null;
+
+  backgroundImages: string[] = [
     'https://source.unsplash.com/random/1024x768?nature',
     'https://source.unsplash.com/random/1024x768?water',
     'https://source.unsplash.com/random/1024x768?forest',
@@ -30,29 +23,41 @@ export class PhotosComponent implements OnInit {
   currentBackgroundIndex: number = 0;
   currentBackground: string = this.backgroundImages[0];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service: ImagesService) { }
 
   ngOnInit(): void {
-    const username = 'User'; // This could be dynamic depending on your application's user management
-    alert(`Hi ${username}! Welcome to your photo gallery.`);
+    this.updateImages();
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
+  next(): void {
+    this.page = this.page + 1;
+    this.updateImages();
+  }
 
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.images.push(e.target.result);
-      };
-
-      reader.readAsDataURL(file);
+  prev(): void {
+    if (this.page > 0) {
+      this.page = this.page - 1;
+      this.updateImages();
     }
+  }
+
+  hiddenPro(): boolean {
+    return !this.pro;
   }
 
   logOut() {
     sessionStorage.clear();
     this.router.navigate(['login']);
+  }
+
+  private updateImages() {
+    this.service.findByUser(this.user as string, this.page * 12, 12)
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.images = response;
+        },
+        (error) => console.log(error)
+      )
   }
 }

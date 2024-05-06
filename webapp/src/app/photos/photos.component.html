@@ -7,11 +7,17 @@
     <h1> Welcome to your photo gallery.</h1>
     <div class="photo-grid">
       <div *ngFor="let image of images" class="photo-box">
-        <img [src]="image" alt="Uploaded image">
+        <img [src]="image.filename" [alt]="image.caption">
+        <div>{{ image.caption }}</div>
+        <div>{{ image.username }}</div>
+        <div>{{ image.moment }}</div>
       </div>
     </div>
     <!-- Navigation Button -->
     <a [routerLink]="['/mainpage']" class="upload-btn">Upload More Images to Get Captions</a>
+    <a [routerLink]="['/bla']" [hidden]="hiddenPro()">Advanced search</a>
+    <p-button label="prev" (onClick)="prev()"></p-button>
+    <p-button label="next" (onClick)="next()"></p-button>
     <p-button class="nav-link my-logout-btn" label="Sign out" (onClick)="logOut()"></p-button>
   </div>
 </div>
