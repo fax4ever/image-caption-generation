@@ -1,0 +1,17 @@
+<section>
+    <a [routerLink]="['/mainpage']" class="upload-btn">Upload More Images to Get Captions</a>
+    <a [routerLink]="['/photos']" class="upload-btn">Your gallery</a>
+    <p-button class="my-logout-btn" label="Sign out" (onClick)="logOut()"></p-button>
+</section>
+<section>
+    <form>
+        <input type="text" placeholder="Search by caption text" #filter>
+        <p-button class="primary" type="button" (click)="search(filter.value)">Search</p-button>
+        <p-button class="primary" label="prev" (onClick)="prev()"></p-button>
+        <p-button class="primary" label="next" (onClick)="next()"></p-button>
+    </form>
+</section>
+<section class="results">
+    <app-image-item *ngFor="let image of images" [image]="image">
+    </app-image-item>
+</section>

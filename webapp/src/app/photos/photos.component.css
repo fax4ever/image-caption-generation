@@ -41,7 +41,6 @@ h1 {
 }
 
 .upload-btn {
-  display: inline-block;
   background-color: #007bffc1; /* Slightly transparent blue */
   color: white;
   padding: 12px 24px; /* Slightly larger padding for a better visual impact */
@@ -55,6 +54,10 @@ h1 {
   font-weight: 600; /* Medium weight for better legibility */
   text-transform: uppercase; /* Uppercase text for a more styled look */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+p-button.upload-btn {
+  display: inline-block;
 }
 
 .upload-btn:hover, .upload-btn:focus {

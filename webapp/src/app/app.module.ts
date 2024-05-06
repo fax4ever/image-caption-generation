@@ -15,6 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 import { MainpageComponent } from './components/mainpage/mainpage.component';
 import { PhotosComponent } from './photos/photos.component';
+import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
+import { ImageItemComponent } from './image-item/image-item.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { PhotosComponent } from './photos/photos.component';
     LoginComponent,
     RegisterComponent,
     MainpageComponent,
-    PhotosComponent
+    PhotosComponent,
+    AdvancedSearchComponent,
+    ImageItemComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,7 @@
+<section class="listing">
+    <img class="listing-photo" [src]="image.filename" alt="Exterior photo of {{ image.caption }}"
+        crossorigin />
+    <h2 class="listing-heading">{{ image.caption }}</h2>
+    <div>{{ image.moment | date: 'dd/MM/yyyy hh:mm:ss' }}</div>
+    <div class="listing-location">{{ image.username }}</div>
+</section>

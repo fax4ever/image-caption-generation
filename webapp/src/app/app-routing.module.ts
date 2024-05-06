@@ -5,6 +5,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { authGuard } from './guards/auth.guard';
 import { MainpageComponent } from './components/mainpage/mainpage.component';
 import { PhotosComponent } from './photos/photos.component';
+import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
+import { authGuardPro } from './guards/auth.guardpro';
 
 
 const routes: Routes = [
@@ -25,6 +27,11 @@ const routes: Routes = [
     path: 'photos',
     component: PhotosComponent,
     canActivate: [authGuard]
+  },
+  {
+    path: 'advanced-search',
+    component: AdvancedSearchComponent,
+    canActivate: [authGuardPro]
   },
   {
     path: '', redirectTo: 'mainpage', pathMatch: 'full'

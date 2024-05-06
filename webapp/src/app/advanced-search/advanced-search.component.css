@@ -1,0 +1,66 @@
+.results {
+    display: grid;
+    column-gap: 14px;
+    row-gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 400px));
+    margin-top: 50px;
+    justify-content: space-around;
+  }
+  input[type="text"] {
+    border: solid 1px var(--primary-color);
+    padding: 10px;
+    border-radius: 8px;
+    margin-right: 4px;
+    display: inline-block;
+    width: 30%;
+  }
+  button {
+    padding: 10px;
+    border: solid 1px var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    border-radius: 8px;
+  }
+  @media (min-width: 500px) and (max-width: 768px) {
+    .results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    input[type="text"] {
+        width: 70%;
+    }   
+  }
+  @media (max-width: 499px) {
+    .results {
+        grid-template-columns: 1fr;
+    }    
+  }
+  
+  .upload-btn {
+    display: inline-block;
+    background-color: #007bffc1; /* Slightly transparent blue */
+    color: white;
+    padding: 12px 24px; /* Slightly larger padding for a better visual impact */
+    margin: 20px 0;
+    border: none; /* Remove border for a cleaner look */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    font-family: 'Poppins', sans-serif; /* Use Poppins font */
+    font-size: 16px; /* Slightly larger font size for readability */
+    font-weight: 600; /* Medium weight for better legibility */
+    text-transform: uppercase; /* Uppercase text for a more styled look */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  }
+
+  .my-logout-btn {
+    position: absolute;  /* Changed to position absolutely */
+    top: 100px;  /* Distance from the top */
+    right: 20px;  /* Distance from the right */
+    margin: 0;  /* Adjusted margin */
+    padding: 10px 20px;
+    background-color: #516fc3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
