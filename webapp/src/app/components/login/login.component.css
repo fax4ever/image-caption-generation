@@ -11,7 +11,7 @@ html, body {
     align-items: center;
     height: 100vh; /* Use viewport height to make sure it covers the full screen */
     width: 100vw; /* Cover the full viewport width */
-    background: url('https://source.unsplash.com/featured/?technology') no-repeat center center fixed;
+    background: url('https://picsum.photos/1920/1080') no-repeat center center fixed;
     background-size: cover; /* Ensure the background covers the entire element */
 }
 

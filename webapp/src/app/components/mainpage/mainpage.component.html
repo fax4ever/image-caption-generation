@@ -9,10 +9,10 @@ User
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
-        
+
         body {
             font-family: 'Poppins', sans-serif;
-            background: url('https://source.unsplash.com/featured/?nature,water') no-repeat center center fixed;
+            background: url('https://picsum.photos/1920/1080') no-repeat center center fixed;
             background-size: cover;
             background-position: center;
             color: #333;
@@ -24,7 +24,7 @@ User
             align-items: center;
             justify-content: center;
         }
-       
+
         .container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -32,7 +32,7 @@ User
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
             width: 100%;
             max-width: 600px;
-           
+
         }
         .my-photos-btn {
             margin: 10px;
@@ -42,7 +42,7 @@ User
             border: none;
             border-radius: 5px;
             cursor: pointer;
-  }          
+  }
         h2 {
             font-weight: 600;
             margin-bottom: 20px;
@@ -71,7 +71,7 @@ User
             <input type="submit" label="Generate Caption" [disabled]="imageForm.invalid" />
         </form>
         <div class="mt-5" ng-if="caption">
-            <h5>Image Caption: </h5> 
+            <h5>Image Caption: </h5>
             <p class="lead">{{ caption }}</p>
         </div>
     </div>

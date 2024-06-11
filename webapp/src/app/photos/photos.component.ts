@@ -15,10 +15,10 @@ export class PhotosComponent implements OnInit {
   pro : boolean = sessionStorage.getItem('pro') != null;
 
   backgroundImages: string[] = [
-    'https://source.unsplash.com/random/1024x768?nature',
-    'https://source.unsplash.com/random/1024x768?water',
-    'https://source.unsplash.com/random/1024x768?forest',
-    'https://source.unsplash.com/random/1024x768?city'
+    'https://picsum.photos/1920/1080',
+    'https://picsum.photos/1920/1080',
+    'https://picsum.photos/1920/1080',
+    'https://picsum.photos/1920/1080'
   ];
   currentBackgroundIndex: number = 0;
   currentBackground: string = this.backgroundImages[0];
